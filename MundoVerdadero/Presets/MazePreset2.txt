@@ -1,0 +1,26 @@
+Obstacle 0 0 0 100 0 0 0 0
+Obstacle 1 100 0 100 100 0 0 0
+Obstacle 2 100 100 0 100 0 0 0
+Obstacle 3 0 100 0 0 0 0 0
+Obstacle 4 30 35 25 45 0 0 0
+Obstacle 5 25 45 30 55 0 0 0
+Obstacle 6 30 55 40 55 0 0 0
+Obstacle 7 40 55 45 45 0 0 0
+Obstacle 8 45 45 40 35 0 0 0
+Obstacle 9 40 35 30 35 0 0 0
+Obstacle 10 75 40 70 50 0 0 0
+Obstacle 11 70 50 75 60 0 0 0
+Obstacle 12 75 60 85 60 0 0 0
+Obstacle 13 85 60 90 50 0 0 0
+Obstacle 14 90 50 85 40 0 0 0
+Obstacle 15 85 40 75 40 0 0 0
+Obstacle 16 35 65 30 75 0 0 0
+Obstacle 17 30 75 35 85 0 0 0
+Obstacle 18 35 85 45 85 0 0 0
+Obstacle 19 45 85 50 75 0 0 0
+Obstacle 20 50 75 45 65 0 0 0
+Obstacle 21 45 65 35 65 0 0 0
+Robot 0 10 35 90 5 5 6 30 0 0 0 0.8 1
+Charger 0 85 85 7 7 0.8 0 0
+CameraSensor 0 50 50 50 0 0 -1 45 45 200 200 1 1 1 0 0 1
+Goal 0 85 85
