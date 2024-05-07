@@ -1089,7 +1089,9 @@ class myCanvas extends JComponent implements MouseListener {
 				recordPercepts();
 
 				// detect charging
-				if ((Math.abs(robots.get(0).x - chargers.get(0).x) < 1.0) && (Math.abs(robots.get(0).y - chargers.get(0).y) < 1.0)) {
+				// set the radius here
+				float radius = 10;
+				if ((Math.abs(robots.get(0).x - chargers.get(0).x) < radius) && (Math.abs(robots.get(0).y - chargers.get(0).y) < radius)) {
 					setSimulation(false);
 					try {
 						// now write the information to the appropriate robotactuators file
