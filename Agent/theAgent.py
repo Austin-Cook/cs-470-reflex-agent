@@ -1,9 +1,8 @@
-# TODO: You should write the function computeTrajectory
-
 import sys
 import os
 import time
 import math
+import numpy
 
 # *****************************************************************************************************************
 # 
@@ -25,16 +24,57 @@ import math
 #  
 #  ****************************************************************************************************************
 def computeTrajectory(robotPos, goalPos, distanceSensors):
-	# TODO: tells the robot the robot which direction to go (default specified here: robot goes up)
+	goal_radius = 10 # NOTE - the radius must be consistent with that in robotViewer.java ln 1093 (remember to recompile)
+	obj_radius = 1
+	alpha = 5 # how big a step to take to goal
+	beta = 100 # how big a step to take away from obstacle
+	goal_spread = 75
+	obj_spread = 5
+	goal_x = goalPos[0]
+	goal_y = goalPos[1]
+	robot_x = robotPos[0]
+	robot_y = robotPos[1]
+	robot_orientation = robotPos[2]
+	
+	dist = math.sqrt(((goal_x - robot_x) ** 2) + ((goal_y - robot_y) ** 2))
+	theta = math.atan((goal_y - robot_y) / (goal_x - robot_x)) 
+ 	# attractive forces
+	# visual representation:
+	# outside the spread  |  spread  |  radius  |goal|
+	delta_x = 0 # value if inside radius
+	delta_y = 0 # value if inside radius
+	if goal_radius <= dist and dist <= goal_spread + goal_radius:
+		# inside spead
+		delta_x = alpha * (dist - goal_radius) * math.cos(theta)
+		delta_y = alpha * (dist - goal_radius) * math.sin(theta)
+	elif dist > goal_spread + goal_radius: 
+		# outside the spread
+		delta_x = alpha * goal_spread * math.cos(theta)
+		delta_y = alpha * goal_spread * math.sin(theta)
+  
+	# repulsive forces
+	repulsive_x = 0
+	repulsive_y = 0
+	for i in range(16):
+		obj_dist = distanceSensors[i]
+		obj_theta = ((((2 * math.pi) / 16) * i) + ((3 * math.pi) / 2) + math.radians(robot_orientation)) % (2 * math.pi)
+		print("Sensor ", i, ": theta: ", math.degrees(obj_theta))
+		if obj_dist < obj_radius:
+			# within object radius - jump away
+			repulsive_x += -(numpy.sign(math.cos(obj_theta))) * 10000
+			repulsive_y += -(numpy.sign(math.sin(obj_theta))) * 10000
+		elif obj_radius <= obj_dist and obj_dist <= obj_spread + obj_radius:
+			repulsive_x += -(beta * (obj_spread + obj_radius - obj_dist) * math.cos(obj_theta))
+			repulsive_y += -(beta * (obj_spread + obj_radius - obj_dist) * math.sin(obj_theta))
+		# if distance to object is greater than obj spread, no repulsive forces detected
 
 	trajectory = []
-	trajectory.append(0.0)
-	trajectory.append(1.0)
+	trajectory.append(delta_x + repulsive_x)
+	trajectory.append(delta_y + repulsive_y)
 
-	# End TODO
-
-	# call this function before returning (to normalize the trajectory vector so that it is a unit vector)
+	# normalize the trajectory vector so that it is a unit vector
 	trajectory = normalize(trajectory)
+  
 	return trajectory
 
 
@@ -188,5 +228,3 @@ if __name__ == "__main__":
 			quit = endSimulation()
 
 			time.sleep(.5)
-
-
